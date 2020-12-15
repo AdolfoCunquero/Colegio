@@ -14,7 +14,6 @@ $(function(){
             dataSrc:""
         },
         columns:[
-            {"data":"gr_id_grado"},
             {"data":"gr_nombre"},
             {"data":"gr_descripcion"},
             {"data":"jornada"},

@@ -1,0 +1,23 @@
+{% extends 'crud/list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'js/horario_list.js' %}"></script>
+{% endblock %}
+
+
+{% block columns %}
+    <tr>
+        <th scope="col" style="width:10%">Ciclo</th>
+        <th scope="col" style="width:15%">Grado</th>
+        <th scope="col" style="width:15%">Curso</th>
+        <th scope="col" style="width:15%">Catedratico</th>
+        <th scope="col" style="width:10%">Hora inicio</th>
+        <th scope="col" style="width:10%">Hora fin</th>
+        <th scope="col" style="width:5%">No Periodo</th>
+        <th scope="col" style="width:20%">Operaciones</th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}

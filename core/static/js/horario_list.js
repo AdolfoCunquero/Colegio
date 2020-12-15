@@ -14,16 +14,22 @@ $(function(){
             dataSrc:""
         },
         columns:[
-            {"data":"jo_descripcion"},
-            {"data":"jo_id_jornada"},
+            {"data":"ho_ciclo"},
+            {"data":"grado"},
+            {"data":"curso"},
+            {"data":"ho_usuario_catedratico"},
+            {"data":"ho_hora_inicio"},
+            {"data":"ho_hora_fin"},
+            {"data":"ho_no_periodo"},
+            {"data":"ho_no_periodo"}
         ],
         columnDefs:[{
             targets:[-1],
             class:"text-center",
             orderable:false,
             render:function(data, type, row){
-                var buttons = '<a href="/jornada/update/'+row.jo_id_jornada+'/"  class="btn btn-warning btn-xs btn-xs btn-flat">Edit</a> '
-                buttons += '<a href="/jornada/delete/'+row.jo_id_jornada+'/" class="btn btn-danger btn-xs btn-flat">Delete</a>'
+                var buttons = '<a href="/horario/update/'+row.ho_id_grado_curso+'/"  class="btn btn-warning btn-xs btn-xs btn-flat">Edit</a> '
+                buttons += '<a href="/horario/delete/'+row.ho_id_grado_curso+'/" class="btn btn-danger btn-xs btn-flat">Delete</a>'
                 return buttons;
             }
         }],

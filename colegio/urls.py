@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.urls import jornada_patterns, grado_patterns
+from core.urls import jornada_patterns, grado_patterns, curso_patterns, horario_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('jornada/',include(jornada_patterns)),
     path('grado/',include(grado_patterns)),
+    path('curso/',include(curso_patterns)),
+    path('horario/',include(horario_patterns)),
 ]

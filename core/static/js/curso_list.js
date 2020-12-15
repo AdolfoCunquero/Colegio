@@ -14,16 +14,18 @@ $(function(){
             dataSrc:""
         },
         columns:[
-            {"data":"jo_descripcion"},
-            {"data":"jo_id_jornada"},
+            
+            {"data":"cu_nombre"},
+            {"data":"cu_descripcion"},
+            {"data":"cu_descripcion"}
         ],
         columnDefs:[{
             targets:[-1],
             class:"text-center",
             orderable:false,
             render:function(data, type, row){
-                var buttons = '<a href="/jornada/update/'+row.jo_id_jornada+'/"  class="btn btn-warning btn-xs btn-xs btn-flat">Edit</a> '
-                buttons += '<a href="/jornada/delete/'+row.jo_id_jornada+'/" class="btn btn-danger btn-xs btn-flat">Delete</a>'
+                var buttons = '<a href="/curso/update/'+row.cu_id_curso+'/"  class="btn btn-warning btn-xs btn-xs btn-flat">Edit</a> '
+                buttons += '<a href="/curso/delete/'+row.cu_id_curso+'/" class="btn btn-danger btn-xs btn-flat">Delete</a>'
                 return buttons;
             }
         }],

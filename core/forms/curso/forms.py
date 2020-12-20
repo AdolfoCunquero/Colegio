@@ -7,16 +7,14 @@ class CursoForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args,**kwargs)
         for form in self.visible_fields():
-            form.field.widget.attrs['class']="form-control"
+            form.field.widget.attrs['class']="form-control form-control-sm" 
             form.field.widget.attrs['autocomplete']="off"
 
         self.fields["cu_nombre"].widget.attrs["autofocus"] = True
-        self.fields['cu_estado'].widget = HiddenInput()
-        self.fields['cu_usuario_creacion'].widget = HiddenInput()
 
     class Meta:
         model = Curso
-        fields ="__all__"
+        fields =["cu_id_curso","cu_nombre","cu_descripcion"]
         widgets={
             "cu_nombre":TextInput(attrs={"placeholder":"Ingrese un nombre de curso"}),
             "cu_descripcion":TextInput(attrs={"placeholder":"Ingrese una descripcion"}),

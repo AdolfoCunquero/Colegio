@@ -14,9 +14,9 @@ class HorarioListView(ListView):
     form_class = HorarioForm
     template_name = "horario/list.html"
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    # @method_decorator(csrf_exempt)
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
@@ -24,7 +24,7 @@ class HorarioListView(ListView):
             action = request.POST['action']
             data = []
             if action == 'searchdata':
-                for i in Horario.objects.all():
+                for i in Horario.objects.filter(ho_estado=True):
                     horario = i.to_json()
                     curso = Curso.objects.filter( cu_id_curso = i.to_json()["ho_id_curso"])
                     grado = Grado.objects.filter( gr_id_grado = i.to_json()["ho_id_grado"])
@@ -44,8 +44,6 @@ class HorarioListView(ListView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["create_url"] = reverse_lazy("horario:create")
-        context["list_url"] = reverse_lazy("horario:list")
-        context["entity"] = 'Horario'
         context["title"] = 'Lista de Horarios'
         return context
 
@@ -54,19 +52,11 @@ class HorarioCreateView(CreateView):
     form_class = HorarioForm
     template_name = "crud/form.html"
 
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            action = request.POST["action"]
-            if action == "add":
-                form = self.get_form()#CategoryForm(request.POST))
-                data = form.save()
-
-            else:
-                data["No es una opcion valida"]
+            form = self.get_form()#CategoryForm(request.POST))
+            data = form.save()
             
         except Exception as e:
             data["error"] = str(e)
@@ -76,7 +66,6 @@ class HorarioCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("horario:list")
-        context["entity"] = 'Horario'
         context["title"] = 'Crear Horario'
         return context
 
@@ -104,17 +93,16 @@ class HorarioUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("horario:list")
-        context["entity"] = 'Horario'
         context["title"] = 'Modificar Horario'
         return context
 
 
 class HorarioDeleteView(DeleteView):
     model = Horario
-    form_class = HorarioForm
+    form_class = HorarioForm()
     template_name = "crud/delete.html"
-    success_url = reverse_lazy("horario:list")
-    
+
+
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(request, *args, **kwargs)
@@ -122,17 +110,18 @@ class HorarioDeleteView(DeleteView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            self.object.delete() 
+            self.object.delete()
             
         except Exception as e:
             data["error"] = str(e)
         
         return JsonResponse(data)
 
+    
+
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("horario:list")
-        context["entity"] = 'Horairo'
         context["title"] = 'Eliminar horario'
         context["item"] = self.object.__str__()
         return context

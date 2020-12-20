@@ -20,7 +20,7 @@ class CursoListView(ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Curso.objects.all():
+                for i in Curso.objects.filter(cu_estado=True):
                     data.append(i.to_json())
             else:
                 data["error"] = "Ha ocurrido un error"
@@ -34,8 +34,6 @@ class CursoListView(ListView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["create_url"] = reverse_lazy("curso:create")
-        context["list_url"] = reverse_lazy("curso:list")
-        context["entity"] = 'Curso'
         context["title"] = 'Listado de cursos'
         return context
 
@@ -43,21 +41,12 @@ class CursoCreateView(CreateView):
     model = Curso
     form_class = CursoForm
     template_name = "crud/form.html"
-    success_url = reverse_lazy("curso:list")
-
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            action = request.POST["action"]
-            if action == "add":
-                form = self.get_form()#CategoryForm(request.POST))
-                data = form.save()
-
-            else:
-                data["No es una opcion valida"]
+            form = self.get_form()#CategoryForm(request.POST))
+            data = form.save()
             
         except Exception as e:
             data["error"] = str(e)
@@ -67,7 +56,6 @@ class CursoCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("curso:list")
-        context["entity"] = 'Curso'
         context["title"] = 'Crear curso'
         return context
 
@@ -95,7 +83,6 @@ class CursoUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("curso:list")
-        context["entity"] = 'Curso'
         context["title"] = 'Modificar curso'
         return context
 
@@ -104,7 +91,6 @@ class CursoDeleteView(DeleteView):
     model = Curso
     form_class = CursoForm
     template_name = "crud/delete.html"
-    success_url = reverse_lazy("curso:list")
     
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -123,7 +109,6 @@ class CursoDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("curso:list")
-        context["entity"] = 'Curso'
         context["title"] = 'Eliminar curso'
         context["item"] = self.object.__str__()
         return context

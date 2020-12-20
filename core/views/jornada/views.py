@@ -20,7 +20,7 @@ class JornadaListView(ListView):
             action = request.POST['action']
             if action == 'searchdata':
                 data = []
-                for i in Jornada.objects.all():
+                for i in Jornada.objects.filter(jo_estado=True):
                     data.append(i.to_json())
             else:
                 data["error"] = "Ha ocurrido un error"
@@ -34,8 +34,6 @@ class JornadaListView(ListView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["create_url"] = reverse_lazy("jornada:create")
-        context["list_url"] = reverse_lazy("jornada:list")
-        context["entity"] = 'Jornada'
         context["title"] = 'Listado de jornadas'
         return context
 
@@ -45,21 +43,13 @@ class JornadaCreateView(CreateView):
     template_name = "crud/form.html"
     success_url = reverse_lazy("jornada:list")
 
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            action = request.POST["action"]
-            if action == "add":
-                form = self.get_form()#CategoryForm(request.POST))
-                print(form)
-                data = form.save()
+            form = self.get_form()#CategoryForm(request.POST))
+            print(form)
+            data = form.save()
 
-            else:
-                data["No es una opcion valida"]
-            
         except Exception as e:
             data["error"] = str(e)
         
@@ -68,7 +58,6 @@ class JornadaCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("jornada:list")
-        context["entity"] = 'Jornada'
         context["title"] = 'Crear jornada'
         return context
 
@@ -76,7 +65,7 @@ class JornadaCreateView(CreateView):
 class JornadaUpdateView(UpdateView):
     model = Jornada
     form_class = JornadaForm
-    template_name = "jornada/update.html"
+    template_name = "crud/form.html"
     
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -96,7 +85,6 @@ class JornadaUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("jornada:list")
-        context["entity"] = 'Jornada'
         context["title"] = 'Modificar jornada'
         return context
 
@@ -104,8 +92,7 @@ class JornadaUpdateView(UpdateView):
 class JornadaDeleteView(DeleteView):
     model = Jornada
     form_class = JornadaForm
-    template_name = "jornada/delete.html"
-    success_url = reverse_lazy("jornada:list")
+    template_name = "crud/delete.html"
     
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -124,7 +111,6 @@ class JornadaDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
         context["list_url"] = reverse_lazy("jornada:list")
-        context["entity"] = 'Jornada'
         context["title"] = 'Eliminar jornada'
         context["item"] = self.object.__str__()
         return context
